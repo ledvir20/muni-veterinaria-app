@@ -27,7 +27,7 @@ const Header = ({
                     {/* Logo */}
                     <a href="#inicio" className="group flex items-center gap-2">
                         <div className="gradient-primary shadow-soft group-hover:shadow-glow flex h-10 w-10 items-center justify-center rounded-xl transition-shadow duration-300 md:h-12 md:w-12">
-                            <PawPrint className="h-5 w-5 bg-emerald-700 text-primary-foreground md:h-6 md:w-6" />
+                            <PawPrint className="h-5 w-5 text-primary-foreground md:h-6 md:w-6" />
                         </div>
                         <div className="flex flex-col">
                             <span className="text-sm leading-tight font-bold text-foreground md:text-base">

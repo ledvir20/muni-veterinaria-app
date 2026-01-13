@@ -52,17 +52,18 @@ const ImpactSection = () => {
     return (
         <section
             id="nosotros"
-            className="relative overflow-hidden bg-muted/30 py-20 md:py-28"
+            /* CAMBIO: bg-secondary/20 en lugar de muted para un tono más agradable */
+            className="relative overflow-hidden bg-secondary/20 py-20 md:py-28 dark:bg-secondary/5"
         >
             {/* Background pattern */}
-            <div className="pointer-events-none absolute inset-0 opacity-50">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,hsl(var(--primary)/0.05)_1px,transparent_0)] bg-size-[40px_40px]" />
+            <div className="pointer-events-none absolute inset-0 opacity-50 dark:opacity-20">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,hsl(var(--primary)/0.15)_1px,transparent_0)] bg-size-[40px_40px]" />
             </div>
 
             <div className="relative z-10 container mx-auto">
                 {/* Section Header */}
                 <div className="mx-auto mb-16 max-w-3xl text-center">
-                    <span className="mb-4 inline-block rounded-full bg-secondary px-4 py-1.5 text-sm font-medium text-secondary-foreground">
+                    <span className="mb-4 inline-block rounded-full bg-background px-4 py-1.5 text-sm font-medium text-foreground shadow-sm">
                         Nuestro Impacto
                     </span>
                     <h2 className="mb-6 text-3xl font-bold text-foreground md:text-4xl lg:text-5xl">
@@ -84,9 +85,10 @@ const ImpactSection = () => {
                         return (
                             <div
                                 key={stat.label}
-                                className="hover:shadow-glow rounded-2xl border border-border/50 bg-card p-5 text-center shadow-card transition-all duration-300 md:p-6"
+                                /* CAMBIO: Estilo "Glass" consistente con el resto de la web */
+                                className="group hover:shadow-glow rounded-2xl border border-border/50 bg-card p-5 text-center shadow-card transition-all duration-300 hover:-translate-y-1 md:p-6 dark:border-white/10 dark:bg-card/60 dark:backdrop-blur-sm"
                             >
-                                <div className="gradient-primary mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl">
+                                <div className="gradient-primary shadow-soft mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl transition-transform duration-300 group-hover:scale-110">
                                     <Icon className="h-6 w-6 text-primary-foreground" />
                                 </div>
                                 <p className="mb-1 text-2xl font-bold text-primary md:text-3xl lg:text-4xl">
@@ -113,7 +115,8 @@ const ImpactSection = () => {
                         {testimonials.map((testimonial) => (
                             <div
                                 key={testimonial.author}
-                                className="rounded-2xl border border-border/50 bg-card p-6 shadow-card transition-all duration-300 hover:border-primary/30"
+                                /* CAMBIO: Mismo tratamiento Glass para los testimonios */
+                                className="rounded-2xl border border-border/50 bg-card p-6 shadow-card transition-all duration-300 hover:border-primary/30 hover:shadow-md dark:border-white/10 dark:bg-card/60 dark:backdrop-blur-sm"
                             >
                                 {/* Quote */}
                                 <p className="mb-6 text-sm leading-relaxed text-muted-foreground italic md:text-base">
@@ -122,7 +125,7 @@ const ImpactSection = () => {
 
                                 {/* Author */}
                                 <div className="flex items-center gap-3">
-                                    <div className="gradient-accent flex h-10 w-10 items-center justify-center rounded-full text-sm font-semibold text-accent-foreground">
+                                    <div className="gradient-accent flex h-10 w-10 items-center justify-center rounded-full text-sm font-semibold text-accent-foreground shadow-sm">
                                         {testimonial.avatar}
                                     </div>
                                     <div>

@@ -58,10 +58,10 @@ const FeaturesSection = () => {
             id="servicios"
             className="relative bg-background py-20 md:py-28"
         >
-            {/* Decorative background */}
+            {/* Decorative background (AJUSTE: Más visibles en modo oscuro) */}
             <div className="pointer-events-none absolute inset-0 overflow-hidden">
-                <div className="absolute top-0 left-1/4 h-96 w-96 rounded-full bg-primary/3 blur-3xl" />
-                <div className="absolute right-1/4 bottom-0 h-96 w-96 rounded-full bg-accent/3 blur-3xl" />
+                <div className="absolute top-0 left-1/4 h-96 w-96 rounded-full bg-primary/5 blur-3xl dark:bg-primary/10" />
+                <div className="absolute right-1/4 bottom-0 h-96 w-96 rounded-full bg-accent/5 blur-3xl dark:bg-accent/10" />
             </div>
 
             <div className="relative z-10 container mx-auto">
@@ -92,7 +92,8 @@ const FeaturesSection = () => {
                         return (
                             <div
                                 key={feature.title}
-                                className="group hover:shadow-glow relative rounded-2xl border border-border/50 bg-card p-6 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 md:p-8"
+                                /* AJUSTE: dark:bg-card/60 y dark:border-white/10 para igualar al Hero */
+                                className="group hover:shadow-glow relative rounded-2xl border border-border/50 bg-card p-6 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 md:p-8 dark:border-white/10 dark:bg-card/60 dark:backdrop-blur-sm"
                                 style={{ animationDelay: `${index * 0.1}s` }}
                             >
                                 {/* Icon */}
@@ -114,7 +115,7 @@ const FeaturesSection = () => {
                                     {feature.description}
                                 </p>
 
-                                {/* Hover indicator */}
+                                {/* Hover indicator (AJUSTE: bg-gradient-to-r es más estándar) */}
                                 <div className="absolute right-0 bottom-0 left-0 h-1 rounded-b-2xl bg-linear-to-r from-primary to-accent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
                             </div>
                         );
