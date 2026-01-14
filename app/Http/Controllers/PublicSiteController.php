@@ -14,6 +14,11 @@ class PublicSiteController extends Controller
         ]);
     }
 
+    public function registrarMascota()
+    {
+        return inertia('public/registrar-mascota');
+    }
+
     // public function services()
     // {
     //     return inertia('public/services');

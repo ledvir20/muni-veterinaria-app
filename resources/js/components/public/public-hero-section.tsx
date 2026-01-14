@@ -1,4 +1,6 @@
 import { Button } from '@/components/ui/button';
+import { registrarMascota } from '@/routes/public';
+import { Link } from '@inertiajs/react';
 import { ArrowRight, Heart, PawPrint, Shield } from 'lucide-react';
 
 export const PublicHeroSection = () => {
@@ -42,14 +44,16 @@ export const PublicHeroSection = () => {
 
                         {/* CTA Buttons */}
                         <div className="stagger-3 flex animate-fade-in-up flex-col justify-center gap-4 sm:flex-row lg:justify-start">
-                            <Button
-                                size="lg"
-                                className="gradient-primary shadow-soft hover:shadow-glow hover:shadow-glow px-8 text-base text-primary-foreground transition-all duration-300 hover:-translate-y-1 hover:brightness-110"
-                            >
-                                <PawPrint className="mr-2 h-5 w-5" />
-                                Registrar Mascota
-                                <ArrowRight className="ml-2 h-5 w-5" />
-                            </Button>
+                            <Link href={registrarMascota()}>
+                                <Button
+                                    size="lg"
+                                    className="gradient-primary shadow-soft hover:shadow-glow hover:shadow-glow px-8 text-base text-primary-foreground transition-all duration-300 hover:-translate-y-1 hover:brightness-110"
+                                >
+                                    <PawPrint className="mr-2 h-5 w-5" />
+                                    Registrar Mascota
+                                    <ArrowRight className="ml-2 h-5 w-5" />
+                                </Button>
+                            </Link>
                             <Button
                                 variant="outline"
                                 size="lg"
