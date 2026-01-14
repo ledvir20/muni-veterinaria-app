@@ -48,7 +48,7 @@ const testimonials = [
     },
 ];
 
-const ImpactSection = () => {
+export const PublicImpactSection = () => {
     return (
         <section
             id="nosotros"
@@ -145,5 +145,3 @@ const ImpactSection = () => {
         </section>
     );
 };
-
-export default ImpactSection;

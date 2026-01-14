@@ -4,7 +4,7 @@ import { Link } from '@inertiajs/react';
 import { LogIn, Menu, PawPrint, X } from 'lucide-react';
 import { useState } from 'react';
 
-const Header = ({
+export const PublicHeader = ({
     auth,
     canRegister = true,
 }: {
@@ -57,7 +57,7 @@ const Header = ({
                         {auth?.user ? (
                             <Link
                                 href={dashboard()}
-                                className="inline-flex items-center rounded-md border bg-transparent px-4 py-2 text-sm"
+                                className="inline-flex items-center rounded-md px-3 py-1.5 text-sm font-medium text-muted-foreground border border-border bg-transparent hover:bg-muted hover:text-primary transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-card"
                             >
                                 Dashboard
                             </Link>
@@ -66,14 +66,16 @@ const Header = ({
                                 {canRegister && (
                                     <Link
                                         href={register()}
-                                        className="inline-flex items-center rounded-md border px-4 py-2 text-sm text-muted-foreground hover:underline"
+                                        className="inline-flex items-center rounded-md px-3 py-1.5 text-sm font-medium text-muted-foreground border border-border bg-transparent hover:bg-muted hover:text-primary transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-card"
+                                        aria-label="Registrarse"
                                     >
                                         Registrarse
                                     </Link>
                                 )}
                                 <Link
                                     href={login()}
-                                    className="gradient-primary shadow-soft hover:shadow-glow inline-flex items-center rounded-md px-4 py-2 text-sm text-primary-foreground"
+                                    className="inline-flex items-center rounded-md px-3 py-1.5 text-sm font-medium gradient-primary shadow-soft text-primary-foreground hover:shadow-glow hover:scale-105 active:scale-95 transition-transform transform focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-card"
+                                    aria-label="Iniciar sesión"
                                 >
                                     <LogIn className="mr-2 h-4 w-4" />
                                     Iniciar Sesión
@@ -114,7 +116,7 @@ const Header = ({
                                 {auth?.user ? (
                                     <Link
                                         href={dashboard()}
-                                        className="w-full justify-center rounded-lg px-4 py-3 text-center text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-primary"
+                                        className="w-full inline-flex justify-center items-center rounded-lg px-4 py-3 text-center text-sm font-medium text-muted-foreground border border-border bg-transparent hover:bg-muted hover:text-primary transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-card"
                                     >
                                         Dashboard
                                     </Link>
@@ -123,14 +125,14 @@ const Header = ({
                                         {canRegister && (
                                             <Link
                                                 href={register()}
-                                                className="w-full justify-center rounded-lg px-4 py-3 text-center text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-primary"
+                                                className="w-full inline-flex justify-center items-center rounded-lg px-4 py-3 text-center text-sm font-medium text-muted-foreground border border-border bg-transparent hover:bg-muted hover:text-primary transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-card"
                                             >
                                                 Registrarse
                                             </Link>
                                         )}
                                         <Link
                                             href={login()}
-                                            className="gradient-primary w-full justify-center rounded-lg px-4 py-3 text-center text-sm font-medium text-primary-foreground"
+                                            className="w-full inline-flex justify-center items-center rounded-lg px-4 py-3 text-center text-sm font-medium gradient-primary text-primary-foreground shadow-soft hover:shadow-glow hover:scale-105 active:scale-95 transition-transform transform focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-card"
                                         >
                                             <LogIn className="mr-2 inline-block h-4 w-4" />
                                             Iniciar Sesión
@@ -145,5 +147,3 @@ const Header = ({
         </header>
     );
 };
-
-export default Header;

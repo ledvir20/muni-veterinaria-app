@@ -9,7 +9,7 @@ import {
     Youtube,
 } from 'lucide-react';
 
-const Footer = () => {
+export const PublicFooter = () => {
     const currentYear = new Date().getFullYear();
 
     return (
@@ -174,5 +174,3 @@ const Footer = () => {
         </footer>
     );
 };
-
-export default Footer;

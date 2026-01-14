@@ -1,18 +1,14 @@
-import FeaturesSection from '@/components/public/FeaturesSection';
-import Footer from '@/components/public/Footer';
-import Header from '@/components/public/Header';
-import HeroSection from '@/components/public/HeroSection';
-import ImpactSection from '@/components/public/ImpactSection';
-import { type SharedData } from '@/types';
-import { Head, usePage } from '@inertiajs/react';
+import { PublicFeaturesSection } from '@/components/public/public-features-section';
+import { PublicHeroSection } from '@/components/public/public-hero-section';
+import { PublicImpactSection } from '@/components/public/public-impact-section';
+import { PublicLayout } from '@/layouts/public-layout';
+import { Head } from '@inertiajs/react';
 
 export default function HomePage({
     canRegister = true,
 }: {
     canRegister?: boolean;
 }) {
-    const { auth } = usePage<SharedData>().props;
-
     return (
         <>
             <Head title="Home">
@@ -23,15 +19,11 @@ export default function HomePage({
                 />
             </Head>
 
-            <div className="min-h-screen bg-background">
-                <Header auth={auth} canRegister={canRegister} />
-                <main>
-                    <HeroSection />
-                    <FeaturesSection />
-                    <ImpactSection />
-                </main>
-                <Footer />
-            </div>
+            <PublicLayout canRegister={canRegister}>
+                <PublicHeroSection />
+                <PublicFeaturesSection />
+                <PublicImpactSection />
+            </PublicLayout>
         </>
     );
 }

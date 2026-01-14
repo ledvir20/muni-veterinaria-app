@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Heart, PawPrint, Shield } from 'lucide-react';
 
-const HeroSection = () => {
+export const PublicHeroSection = () => {
     return (
         <section
             id="inicio"
@@ -165,5 +165,3 @@ const HeroSection = () => {
         </section>
     );
 };
-
-export default HeroSection;

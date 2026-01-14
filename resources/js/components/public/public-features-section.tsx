@@ -52,7 +52,7 @@ const features = [
     },
 ];
 
-const FeaturesSection = () => {
+export const PublicFeaturesSection = () => {
     return (
         <section
             id="servicios"
@@ -125,5 +125,3 @@ const FeaturesSection = () => {
         </section>
     );
 };
-
-export default FeaturesSection;
