@@ -1,0 +1,97 @@
+models:
+  User:
+    name: string
+    email: string unique
+    email_verified_at: timestamp nullable
+    password: string
+    two_factor_secret: text nullable
+    two_factor_recovery_codes: text nullable
+    two_factor_confirmed_at: timestamp nullable
+    remember_token: string nullable
+    timestamps: true
+    relationships:
+      hasOne: Owner, Veterinarian
+
+  Owner:
+    user_id: id foreign unique onDelete:cascade
+    dni: char:8 unique
+    full_name: string
+    phone: string nullable
+    district: string
+    address: string
+    timestamps: true
+    relationships:
+      belongsTo: User
+      hasMany: Pet
+
+  Veterinarian:
+    user_id: id foreign unique onDelete:cascade
+    license_number: string
+    specialty: string
+    is_active: boolean default:true
+    timestamps: true
+    relationships:
+      belongsTo: User
+      hasMany: MedicalRecord, Appointment
+
+  Pet:
+    owner_id: id foreign onDelete:cascade
+    code: string unique nullable
+    name: string
+    species: enum:perro,gato,otro
+    breed: string nullable
+    birth_date: date nullable
+    age: integer
+    age_unit: enum:meses,anios
+    gender: enum:M,H
+    color: string nullable
+    weight: decimal:5,2 nullable
+    microchip: string unique nullable
+    is_sterilized: boolean default:false
+    vaccination_status: enum:si,no,parcial default:no
+    observations: text nullable
+    photo_path: string nullable
+    status: enum:pendiente,validado,rechazado default:pendiente
+    rejection_reason: text nullable
+    softDeletes: true
+    timestamps: true
+    relationships:
+      belongsTo: Owner
+      hasMany: MedicalRecord, Appointment
+
+  Appointment:
+    pet_id: id foreign onDelete:cascade
+    veterinarian_id: id foreign nullable
+    scheduled_at: dateTime
+    status: enum:pendiente,confirmada,atendida,cancelada default:pendiente
+    reason: string
+    timestamps: true
+    relationships:
+      belongsTo: Pet, Veterinarian
+      hasOne: MedicalRecord
+
+  MedicalRecord:
+    pet_id: id foreign onDelete:cascade
+    veterinarian_id: id foreign
+    appointment_id: id foreign nullable
+    type: enum:consulta,emergencia,control,vacunacion
+    diagnosis: string
+    description: text
+    weight_at_visit: decimal:5,2 nullable
+    next_visit_date: date nullable
+    attachments: json nullable
+    timestamps: true
+    relationships:
+      belongsTo: Pet, Veterinarian, Appointment
+
+controllers:
+  Owner:
+    resource: all
+  Veterinarian:
+    resource: all
+  Pet:
+    resource: all
+  Appointment:
+    resource: all
+  MedicalRecord:
+    resource: all
