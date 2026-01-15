@@ -3,7 +3,6 @@ import {
     Card,
     CardContent,
     CardDescription,
-    CardHeader,
     CardTitle,
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -18,14 +17,15 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 
 import {
+    Camera,
     CheckCircle2,
-    FileText,
     Heart,
     Mail,
     MapPin,
     PawPrint,
     Phone,
     Shield,
+    Trash2,
     Upload,
     User,
 } from 'lucide-react';
@@ -186,52 +186,74 @@ export default function PetRegistrationForm() {
         }
     };
 
+    const removePhoto = () => {
+        setFormData((prev) => ({ ...prev, photo: null }));
+        setPhotoPreview(null);
+    };
+
     return (
-        <form onSubmit={handleSubmit} className="space-y-8">
-            {/* Datos de la Mascota */}
-            <Card className="shadow-elegant border-primary/20">
-                <CardHeader className="rounded-t-lg bg-linear-to-r from-primary/5 to-secondary/5">
-                    <div className="flex items-center gap-3">
-                        <div className="rounded-lg bg-primary/10 p-2">
-                            <PawPrint className="h-6 w-6 text-primary" />
+        <form onSubmit={handleSubmit} className="animate-fade-in-up space-y-8">
+            {/* --- SECCIÓN 1: DATOS DE LA MASCOTA --- */}
+            <Card className="overflow-hidden border border-border/50 bg-card shadow-card dark:border-white/10 dark:bg-card/60 dark:backdrop-blur-sm">
+                <div className="border-b border-border/50 bg-muted/20 p-6">
+                    <div className="flex items-center gap-4">
+                        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                            <PawPrint className="h-6 w-6" />
                         </div>
                         <div>
-                            <CardTitle className="text-xl text-foreground">
+                            <CardTitle className="text-xl">
                                 Datos de la Mascota
                             </CardTitle>
                             <CardDescription>
-                                Información general de la mascota a registrar
+                                Información clínica y general
                             </CardDescription>
                         </div>
                     </div>
-                </CardHeader>
-                <CardContent className="pt-6">
-                    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                        {/* Foto */}
-                        <div className="md:col-span-2 lg:col-span-1 lg:row-span-3">
-                            <Label className="text-sm font-medium text-foreground">
-                                Foto de la mascota
+                </div>
+
+                <CardContent className="p-6 md:p-8">
+                    <div className="grid gap-8 md:grid-cols-12">
+                        {/* Columna Izquierda: Foto (Ocupa 4 columnas en desktop) */}
+                        <div className="md:col-span-4 lg:col-span-3">
+                            <Label className="mb-3 block text-sm font-medium">
+                                Foto de perfil
                             </Label>
-                            <div className="mt-2">
+                            <div className="group relative">
                                 <label
                                     htmlFor="photo-upload"
-                                    className="flex h-48 w-full cursor-pointer flex-col items-center justify-center overflow-hidden rounded-xl border-2 border-dashed border-muted-foreground/25 transition-all duration-300 hover:border-primary/50 hover:bg-primary/5"
+                                    className={`relative flex aspect-square w-full cursor-pointer flex-col items-center justify-center overflow-hidden rounded-2xl border-2 border-dashed transition-all duration-300 ${
+                                        photoPreview
+                                            ? 'border-primary/50'
+                                            : 'border-muted-foreground/20 hover:border-primary hover:bg-primary/5'
+                                    }`}
                                 >
                                     {photoPreview ? (
-                                        <img
-                                            src={photoPreview}
-                                            alt="Preview"
-                                            className="h-full w-full object-cover"
-                                        />
+                                        <>
+                                            <img
+                                                src={photoPreview}
+                                                alt="Preview"
+                                                className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                            />
+                                            <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-opacity group-hover:opacity-100">
+                                                <div className="flex items-center gap-2 font-medium text-white">
+                                                    <Camera className="h-5 w-5" />
+                                                    <span>Cambiar</span>
+                                                </div>
+                                            </div>
+                                        </>
                                     ) : (
-                                        <div className="flex flex-col items-center gap-2 text-muted-foreground">
-                                            <Upload className="h-10 w-10" />
-                                            <span className="text-sm">
-                                                Subir imagen
-                                            </span>
-                                            <span className="text-xs">
-                                                PNG, JPG (máx. 5MB)
-                                            </span>
+                                        <div className="flex flex-col items-center gap-3 p-4 text-center text-muted-foreground">
+                                            <div className="rounded-full bg-background p-3 shadow-sm">
+                                                <Upload className="h-6 w-6 text-primary" />
+                                            </div>
+                                            <div>
+                                                <p className="text-sm font-medium text-foreground">
+                                                    Sube una foto
+                                                </p>
+                                                <p className="mt-1 text-xs">
+                                                    PNG, JPG (máx. 5MB)
+                                                </p>
+                                            </div>
                                         </div>
                                     )}
                                 </label>
@@ -242,328 +264,319 @@ export default function PetRegistrationForm() {
                                     onChange={handlePhotoChange}
                                     className="hidden"
                                 />
+
+                                {photoPreview && (
+                                    <button
+                                        type="button"
+                                        onClick={removePhoto}
+                                        className="absolute -top-2 -right-2 rounded-full bg-destructive p-1.5 text-white shadow-md transition-colors hover:bg-destructive/90"
+                                        title="Eliminar foto"
+                                    >
+                                        <Trash2 className="h-4 w-4" />
+                                    </button>
+                                )}
                             </div>
                         </div>
 
-                        {/* Nombre */}
-                        <div className="space-y-2">
-                            <Label
-                                htmlFor="petName"
-                                className="text-sm font-medium text-foreground"
-                            >
-                                Nombre de la mascota{' '}
-                                <span className="text-destructive">*</span>
-                            </Label>
-                            <Input
-                                id="petName"
-                                placeholder="Ej: Max, Luna, Pelusa..."
-                                value={formData.petName}
-                                onChange={(e) =>
-                                    handleInputChange('petName', e.target.value)
-                                }
-                                className="border-muted-foreground/25 focus:border-primary"
-                            />
-                        </div>
-
-                        {/* Especie */}
-                        <div className="space-y-2">
-                            <Label className="text-sm font-medium text-foreground">
-                                Especie{' '}
-                                <span className="text-destructive">*</span>
-                            </Label>
-                            <Select
-                                value={formData.species}
-                                onValueChange={(v) =>
-                                    handleInputChange('species', v)
-                                }
-                            >
-                                <SelectTrigger className="border-muted-foreground/25 focus:border-primary">
-                                    <SelectValue placeholder="Seleccionar especie" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="perro">
-                                        🐕 Perro
-                                    </SelectItem>
-                                    <SelectItem value="gato">
-                                        🐈 Gato
-                                    </SelectItem>
-                                    <SelectItem value="ave">🐦 Ave</SelectItem>
-                                    <SelectItem value="roedor">
-                                        🐹 Roedor
-                                    </SelectItem>
-                                    <SelectItem value="otro">
-                                        📋 Otro
-                                    </SelectItem>
-                                </SelectContent>
-                            </Select>
-                        </div>
-
-                        {/* Raza */}
-                        <div className="space-y-2">
-                            <Label className="text-sm font-medium text-foreground">
-                                Raza
-                            </Label>
-                            <Select
-                                value={formData.breed}
-                                onValueChange={(v) =>
-                                    handleInputChange('breed', v)
-                                }
-                                disabled={!formData.species}
-                            >
-                                <SelectTrigger className="border-muted-foreground/25 focus:border-primary">
-                                    <SelectValue placeholder="Seleccionar raza" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    {getBreeds().map((breed) => (
-                                        <SelectItem
-                                            key={breed}
-                                            value={breed.toLowerCase()}
-                                        >
-                                            {breed}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                        </div>
-
-                        {/* Edad */}
-                        <div className="space-y-2">
-                            <Label className="text-sm font-medium text-foreground">
-                                Edad
-                            </Label>
-                            <div className="flex gap-2">
+                        {/* Columna Derecha: Campos (Ocupa 8 columnas en desktop) */}
+                        <div className="grid gap-6 sm:grid-cols-2 md:col-span-8 lg:col-span-9">
+                            {/* Nombre */}
+                            <div className="space-y-2 sm:col-span-2">
+                                <Label htmlFor="petName">
+                                    Nombre de la mascota{' '}
+                                    <span className="text-primary">*</span>
+                                </Label>
                                 <Input
-                                    type="number"
-                                    placeholder="Edad"
-                                    min="0"
-                                    value={formData.age}
+                                    id="petName"
+                                    placeholder="Ej: Max"
+                                    value={formData.petName}
                                     onChange={(e) =>
-                                        handleInputChange('age', e.target.value)
+                                        handleInputChange(
+                                            'petName',
+                                            e.target.value,
+                                        )
                                     }
-                                    className="flex-1 border-muted-foreground/25 focus:border-primary"
+                                    className="h-11 bg-background/50 focus:bg-background"
                                 />
+                            </div>
+
+                            {/* Especie */}
+                            <div className="space-y-2">
+                                <Label>
+                                    Especie{' '}
+                                    <span className="text-primary">*</span>
+                                </Label>
                                 <Select
-                                    value={formData.ageUnit}
+                                    value={formData.species}
                                     onValueChange={(v) =>
-                                        handleInputChange('ageUnit', v)
+                                        handleInputChange('species', v)
                                     }
                                 >
-                                    <SelectTrigger className="w-24 border-muted-foreground/25">
-                                        <SelectValue />
+                                    <SelectTrigger className="h-11 bg-background/50 focus:bg-background">
+                                        <SelectValue placeholder="Seleccionar" />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="meses">
-                                            Meses
+                                        <SelectItem value="perro">
+                                            🐕 Perro
                                         </SelectItem>
-                                        <SelectItem value="años">
-                                            Años
+                                        <SelectItem value="gato">
+                                            🐈 Gato
+                                        </SelectItem>
+                                        <SelectItem value="otro">
+                                            🐾 Otro
                                         </SelectItem>
                                     </SelectContent>
                                 </Select>
                             </div>
-                        </div>
 
-                        {/* Género */}
-                        <div className="space-y-2">
-                            <Label className="text-sm font-medium text-foreground">
-                                Sexo
-                            </Label>
-                            <Select
-                                value={formData.gender}
-                                onValueChange={(v) =>
-                                    handleInputChange('gender', v)
-                                }
-                            >
-                                <SelectTrigger className="border-muted-foreground/25 focus:border-primary">
-                                    <SelectValue placeholder="Seleccionar sexo" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="macho">
-                                        ♂ Macho
-                                    </SelectItem>
-                                    <SelectItem value="hembra">
-                                        ♀ Hembra
-                                    </SelectItem>
-                                </SelectContent>
-                            </Select>
-                        </div>
+                            {/* Raza */}
+                            <div className="space-y-2">
+                                <Label>Raza</Label>
+                                <Select
+                                    value={formData.breed}
+                                    onValueChange={(v) =>
+                                        handleInputChange('breed', v)
+                                    }
+                                    disabled={!formData.species}
+                                >
+                                    <SelectTrigger className="h-11 bg-background/50 focus:bg-background">
+                                        <SelectValue placeholder="Seleccionar" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {getBreeds().map((breed) => (
+                                            <SelectItem
+                                                key={breed}
+                                                value={breed.toLowerCase()}
+                                            >
+                                                {breed}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            </div>
 
-                        {/* Color */}
-                        <div className="space-y-2">
-                            <Label
-                                htmlFor="color"
-                                className="text-sm font-medium text-foreground"
-                            >
-                                Color
-                            </Label>
-                            <Input
-                                id="color"
-                                placeholder="Ej: Blanco, Negro, Marrón..."
-                                value={formData.color}
-                                onChange={(e) =>
-                                    handleInputChange('color', e.target.value)
-                                }
-                                className="border-muted-foreground/25 focus:border-primary"
-                            />
-                        </div>
+                            {/* Edad (Input + Select combinados) */}
+                            <div className="space-y-2">
+                                <Label>Edad</Label>
+                                <div className="flex gap-2">
+                                    <Input
+                                        type="number"
+                                        placeholder="0"
+                                        min="0"
+                                        value={formData.age}
+                                        onChange={(e) =>
+                                            handleInputChange(
+                                                'age',
+                                                e.target.value,
+                                            )
+                                        }
+                                        className="h-11 bg-background/50 focus:bg-background"
+                                    />
+                                    <Select
+                                        value={formData.ageUnit}
+                                        onValueChange={(v) =>
+                                            handleInputChange('ageUnit', v)
+                                        }
+                                    >
+                                        <SelectTrigger className="h-11 w-28 bg-background/50">
+                                            <SelectValue />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="meses">
+                                                Meses
+                                            </SelectItem>
+                                            <SelectItem value="años">
+                                                Años
+                                            </SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+                            </div>
 
-                        {/* Peso */}
-                        <div className="space-y-2">
-                            <Label
-                                htmlFor="weight"
-                                className="text-sm font-medium text-foreground"
-                            >
-                                Peso (kg)
-                            </Label>
-                            <Input
-                                id="weight"
-                                type="number"
-                                step="0.1"
-                                min="0"
-                                placeholder="Ej: 5.5"
-                                value={formData.weight}
-                                onChange={(e) =>
-                                    handleInputChange('weight', e.target.value)
-                                }
-                                className="border-muted-foreground/25 focus:border-primary"
-                            />
-                        </div>
+                            {/* Sexo */}
+                            <div className="space-y-2">
+                                <Label>Sexo</Label>
+                                <Select
+                                    value={formData.gender}
+                                    onValueChange={(v) =>
+                                        handleInputChange('gender', v)
+                                    }
+                                >
+                                    <SelectTrigger className="h-11 bg-background/50 focus:bg-background">
+                                        <SelectValue placeholder="Seleccionar" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="macho">
+                                            ♂ Macho
+                                        </SelectItem>
+                                        <SelectItem value="hembra">
+                                            ♀ Hembra
+                                        </SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            </div>
 
-                        {/* Microchip */}
-                        <div className="space-y-2">
-                            <Label
-                                htmlFor="microchip"
-                                className="text-sm font-medium text-foreground"
-                            >
-                                Nº Microchip
-                            </Label>
-                            <Input
-                                id="microchip"
-                                placeholder="Código de microchip (si tiene)"
-                                value={formData.microchip}
-                                onChange={(e) =>
-                                    handleInputChange(
-                                        'microchip',
-                                        e.target.value,
-                                    )
-                                }
-                                className="border-muted-foreground/25 focus:border-primary"
-                            />
-                        </div>
+                            {/* Chips de Detalles (Color, Peso, Microchip) */}
+                            <div className="grid grid-cols-1 gap-4 pt-2 sm:col-span-2 sm:grid-cols-3">
+                                <div className="space-y-2">
+                                    <Label htmlFor="color">Color</Label>
+                                    <Input
+                                        id="color"
+                                        placeholder="Ej: Negro"
+                                        value={formData.color}
+                                        onChange={(e) =>
+                                            handleInputChange(
+                                                'color',
+                                                e.target.value,
+                                            )
+                                        }
+                                        className="bg-background/50"
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="weight">Peso (kg)</Label>
+                                    <Input
+                                        id="weight"
+                                        type="number"
+                                        step="0.1"
+                                        placeholder="0.0"
+                                        value={formData.weight}
+                                        onChange={(e) =>
+                                            handleInputChange(
+                                                'weight',
+                                                e.target.value,
+                                            )
+                                        }
+                                        className="bg-background/50"
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="microchip">Microchip</Label>
+                                    <Input
+                                        id="microchip"
+                                        placeholder="Opcional"
+                                        value={formData.microchip}
+                                        onChange={(e) =>
+                                            handleInputChange(
+                                                'microchip',
+                                                e.target.value,
+                                            )
+                                        }
+                                        className="bg-background/50"
+                                    />
+                                </div>
+                            </div>
 
-                        {/* Esterilizado */}
-                        <div className="space-y-2">
-                            <Label className="flex items-center gap-2 text-sm font-medium text-foreground">
-                                <Heart className="h-4 w-4 text-primary" />
-                                ¿Está esterilizado/a?
-                            </Label>
-                            <Select
-                                value={formData.sterilized}
-                                onValueChange={(v) =>
-                                    handleInputChange('sterilized', v)
-                                }
-                            >
-                                <SelectTrigger className="border-muted-foreground/25 focus:border-primary">
-                                    <SelectValue placeholder="Seleccionar" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="si">Sí</SelectItem>
-                                    <SelectItem value="no">No</SelectItem>
-                                    <SelectItem value="desconocido">
-                                        Desconocido
-                                    </SelectItem>
-                                </SelectContent>
-                            </Select>
-                        </div>
+                            {/* Estado de Salud */}
+                            <div className="grid grid-cols-1 gap-4 rounded-xl border border-border/50 bg-background/30 p-4 sm:col-span-2 sm:grid-cols-2">
+                                <div className="space-y-2">
+                                    <Label className="flex items-center gap-2">
+                                        <Heart className="h-4 w-4 text-primary" />{' '}
+                                        Esterilizado
+                                    </Label>
+                                    <Select
+                                        value={formData.sterilized}
+                                        onValueChange={(v) =>
+                                            handleInputChange('sterilized', v)
+                                        }
+                                    >
+                                        <SelectTrigger className="bg-background">
+                                            <SelectValue placeholder="Seleccionar" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="si">
+                                                Sí
+                                            </SelectItem>
+                                            <SelectItem value="no">
+                                                No
+                                            </SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+                                <div className="space-y-2">
+                                    <Label className="flex items-center gap-2">
+                                        <Shield className="h-4 w-4 text-accent" />{' '}
+                                        Vacunación
+                                    </Label>
+                                    <Select
+                                        value={formData.vaccinated}
+                                        onValueChange={(v) =>
+                                            handleInputChange('vaccinated', v)
+                                        }
+                                    >
+                                        <SelectTrigger className="bg-background">
+                                            <SelectValue placeholder="Seleccionar" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="si">
+                                                Completa
+                                            </SelectItem>
+                                            <SelectItem value="parcial">
+                                                Parcial
+                                            </SelectItem>
+                                            <SelectItem value="no">
+                                                No
+                                            </SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+                            </div>
 
-                        {/* Vacunado */}
-                        <div className="space-y-2">
-                            <Label className="flex items-center gap-2 text-sm font-medium text-foreground">
-                                <Shield className="h-4 w-4 text-secondary" />
-                                ¿Vacunas al día?
-                            </Label>
-                            <Select
-                                value={formData.vaccinated}
-                                onValueChange={(v) =>
-                                    handleInputChange('vaccinated', v)
-                                }
-                            >
-                                <SelectTrigger className="border-muted-foreground/25 focus:border-primary">
-                                    <SelectValue placeholder="Seleccionar" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="si">Sí</SelectItem>
-                                    <SelectItem value="no">No</SelectItem>
-                                    <SelectItem value="parcial">
-                                        Parcialmente
-                                    </SelectItem>
-                                    <SelectItem value="desconocido">
-                                        Desconocido
-                                    </SelectItem>
-                                </SelectContent>
-                            </Select>
-                        </div>
-
-                        {/* Observaciones */}
-                        <div className="space-y-2 md:col-span-2 lg:col-span-3">
-                            <Label
-                                htmlFor="observations"
-                                className="flex items-center gap-2 text-sm font-medium text-foreground"
-                            >
-                                <FileText className="h-4 w-4 text-muted-foreground" />
-                                Observaciones adicionales
-                            </Label>
-                            <Textarea
-                                id="observations"
-                                placeholder="Información adicional sobre la mascota: condiciones médicas, comportamiento, necesidades especiales..."
-                                value={formData.observations}
-                                onChange={(e) =>
-                                    handleInputChange(
-                                        'observations',
-                                        e.target.value,
-                                    )
-                                }
-                                className="min-h-25 border-muted-foreground/25 focus:border-primary"
-                            />
+                            {/* Observaciones */}
+                            <div className="space-y-2 sm:col-span-2">
+                                <Label htmlFor="observations">
+                                    Observaciones
+                                </Label>
+                                <Textarea
+                                    id="observations"
+                                    placeholder="Detalles médicos, alergias, comportamiento..."
+                                    className="min-h-25 resize-y bg-background/50"
+                                    value={formData.observations}
+                                    onChange={(e) =>
+                                        handleInputChange(
+                                            'observations',
+                                            e.target.value,
+                                        )
+                                    }
+                                />
+                            </div>
                         </div>
                     </div>
                 </CardContent>
             </Card>
 
-            {/* Datos del Propietario */}
-            <Card className="shadow-elegant border-secondary/20">
-                <CardHeader className="rounded-t-lg bg-linear-to-r from-secondary/5 to-primary/5">
-                    <div className="flex items-center gap-3">
-                        <div className="rounded-lg bg-secondary/10 p-2">
-                            <User className="h-6 w-6 text-secondary" />
+            {/* --- SECCIÓN 2: DATOS DEL PROPIETARIO --- */}
+            <Card className="overflow-hidden border border-border/50 bg-card shadow-card dark:border-white/10 dark:bg-card/60 dark:backdrop-blur-sm">
+                <div className="border-b border-border/50 bg-muted/20 p-6">
+                    <div className="flex items-center gap-4">
+                        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-secondary/10 text-secondary-foreground">
+                            <User className="h-6 w-6" />
                         </div>
                         <div>
-                            <CardTitle className="text-xl text-foreground">
+                            <CardTitle className="text-xl">
                                 Datos del Propietario
                             </CardTitle>
                             <CardDescription>
-                                Información de contacto del responsable de la
-                                mascota
+                                Responsable legal de la mascota
                             </CardDescription>
                         </div>
                     </div>
-                </CardHeader>
-                <CardContent className="pt-6">
+                </div>
+
+                <CardContent className="p-6 md:p-8">
                     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                        {/* Nombre completo */}
-                        <div className="space-y-2">
-                            <Label
-                                htmlFor="ownerName"
-                                className="text-sm font-medium text-foreground"
-                            >
-                                Nombre completo{' '}
-                                <span className="text-destructive">*</span>
+                        {/* Nombre */}
+                        <div className="space-y-2 lg:col-span-2">
+                            <Label htmlFor="ownerName">
+                                Nombre Completo{' '}
+                                <span className="text-primary">*</span>
                             </Label>
                             <div className="relative">
                                 <User className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                                 <Input
                                     id="ownerName"
-                                    placeholder="Nombres y apellidos"
+                                    className="h-11 bg-background/50 pl-10"
+                                    placeholder="Nombres y Apellidos"
                                     value={formData.ownerName}
                                     onChange={(e) =>
                                         handleInputChange(
@@ -571,47 +584,42 @@ export default function PetRegistrationForm() {
                                             e.target.value,
                                         )
                                     }
-                                    className="border-muted-foreground/25 pl-10 focus:border-secondary"
                                 />
                             </div>
                         </div>
 
                         {/* DNI */}
                         <div className="space-y-2">
-                            <Label
-                                htmlFor="ownerDni"
-                                className="text-sm font-medium text-foreground"
-                            >
-                                DNI <span className="text-destructive">*</span>
+                            <Label htmlFor="ownerDni">
+                                DNI <span className="text-primary">*</span>
                             </Label>
-                            <Input
-                                id="ownerDni"
-                                placeholder="Número de DNI"
-                                maxLength={8}
-                                value={formData.ownerDni}
-                                onChange={(e) =>
-                                    handleInputChange(
-                                        'ownerDni',
-                                        e.target.value.replace(/\D/g, ''),
-                                    )
-                                }
-                                className="border-muted-foreground/25 focus:border-secondary"
-                            />
+                            <div className="relative">
+                                <Shield className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                                <Input
+                                    id="ownerDni"
+                                    maxLength={8}
+                                    className="h-11 bg-background/50 pl-10"
+                                    placeholder="8 dígitos"
+                                    value={formData.ownerDni}
+                                    onChange={(e) =>
+                                        handleInputChange(
+                                            'ownerDni',
+                                            e.target.value.replace(/\D/g, ''),
+                                        )
+                                    }
+                                />
+                            </div>
                         </div>
 
                         {/* Teléfono */}
                         <div className="space-y-2">
-                            <Label
-                                htmlFor="ownerPhone"
-                                className="text-sm font-medium text-foreground"
-                            >
-                                Teléfono de contacto
-                            </Label>
+                            <Label htmlFor="ownerPhone">Teléfono</Label>
                             <div className="relative">
                                 <Phone className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                                 <Input
                                     id="ownerPhone"
-                                    placeholder="Ej: 987 654 321"
+                                    className="h-11 bg-background/50 pl-10"
+                                    placeholder="999 999 999"
                                     value={formData.ownerPhone}
                                     onChange={(e) =>
                                         handleInputChange(
@@ -619,25 +627,22 @@ export default function PetRegistrationForm() {
                                             e.target.value,
                                         )
                                     }
-                                    className="border-muted-foreground/25 pl-10 focus:border-secondary"
                                 />
                             </div>
                         </div>
 
                         {/* Email */}
                         <div className="space-y-2">
-                            <Label
-                                htmlFor="ownerEmail"
-                                className="text-sm font-medium text-foreground"
-                            >
-                                Correo electrónico
+                            <Label htmlFor="ownerEmail">
+                                Correo Electrónico
                             </Label>
                             <div className="relative">
                                 <Mail className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                                 <Input
                                     id="ownerEmail"
                                     type="email"
-                                    placeholder="correo@ejemplo.com"
+                                    className="h-11 bg-background/50 pl-10"
+                                    placeholder="ejemplo@correo.com"
                                     value={formData.ownerEmail}
                                     onChange={(e) =>
                                         handleInputChange(
@@ -645,32 +650,30 @@ export default function PetRegistrationForm() {
                                             e.target.value,
                                         )
                                     }
-                                    className="border-muted-foreground/25 pl-10 focus:border-secondary"
                                 />
                             </div>
                         </div>
 
                         {/* Distrito */}
                         <div className="space-y-2">
-                            <Label className="text-sm font-medium text-foreground">
-                                Distrito
-                            </Label>
+                            <Label>Distrito</Label>
                             <Select
                                 value={formData.ownerDistrict}
                                 onValueChange={(v) =>
                                     handleInputChange('ownerDistrict', v)
                                 }
                             >
-                                <SelectTrigger className="border-muted-foreground/25 focus:border-secondary">
-                                    <SelectValue placeholder="Seleccionar distrito" />
+                                <SelectTrigger className="relative h-11 bg-background/50 pl-10">
+                                    <MapPin className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                                    <SelectValue placeholder="Seleccionar" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    {districts.map((district) => (
+                                    {districts.map((d) => (
                                         <SelectItem
-                                            key={district}
-                                            value={district.toLowerCase()}
+                                            key={d}
+                                            value={d.toLowerCase()}
                                         >
-                                            {district}
+                                            {d}
                                         </SelectItem>
                                     ))}
                                 </SelectContent>
@@ -678,59 +681,51 @@ export default function PetRegistrationForm() {
                         </div>
 
                         {/* Dirección */}
-                        <div className="space-y-2 md:col-span-2 lg:col-span-1">
-                            <Label
-                                htmlFor="ownerAddress"
-                                className="text-sm font-medium text-foreground"
-                            >
-                                Dirección
-                            </Label>
-                            <div className="relative">
-                                <MapPin className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                                <Input
-                                    id="ownerAddress"
-                                    placeholder="Calle, número, referencia..."
-                                    value={formData.ownerAddress}
-                                    onChange={(e) =>
-                                        handleInputChange(
-                                            'ownerAddress',
-                                            e.target.value,
-                                        )
-                                    }
-                                    className="border-muted-foreground/25 pl-10 focus:border-secondary"
-                                />
-                            </div>
+                        <div className="space-y-2 md:col-span-2 lg:col-span-3">
+                            <Label htmlFor="ownerAddress">Dirección</Label>
+                            <Input
+                                id="ownerAddress"
+                                className="h-11 bg-background/50"
+                                placeholder="Av. Principal 123, Referencia..."
+                                value={formData.ownerAddress}
+                                onChange={(e) =>
+                                    handleInputChange(
+                                        'ownerAddress',
+                                        e.target.value,
+                                    )
+                                }
+                            />
                         </div>
                     </div>
                 </CardContent>
             </Card>
 
-            {/* Botones de acción */}
-            <div className="flex flex-col justify-end gap-4 sm:flex-row">
+            {/* --- BOTONES --- */}
+            <div className="flex flex-col-reverse justify-end gap-4 pt-4 sm:flex-row">
                 <Button
                     type="button"
                     variant="outline"
-                    className="sm:w-auto"
                     onClick={() => {
                         setFormData(initialFormData);
                         setPhotoPreview(null);
                     }}
+                    className="h-12 border-border/50 px-8"
                 >
-                    Limpiar formulario
+                    Limpiar
                 </Button>
                 <Button
                     type="submit"
-                    className="bg-gradient-primary gap-2 text-white hover:opacity-90 sm:w-auto"
                     disabled={isSubmitting}
+                    className="gradient-primary shadow-soft hover:shadow-glow h-12 px-8 text-white transition-all"
                 >
                     {isSubmitting ? (
                         <>
-                            <div className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
-                            Registrando...
+                            <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+                            Procesando...
                         </>
                     ) : (
                         <>
-                            <CheckCircle2 className="h-4 w-4" />
+                            <CheckCircle2 className="mr-2 h-5 w-5" />
                             Registrar Mascota
                         </>
                     )}
