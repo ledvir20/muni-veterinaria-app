@@ -2,10 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
 use Illuminate\Database\Seeder;
-use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class RolePermissionSeeder extends Seeder
 {
@@ -26,13 +25,17 @@ class RolePermissionSeeder extends Seeder
             Permission::firstOrCreate(['name' => $perm]);
         }
 
-        $admin = Role::firstOrCreate(['name' => 'admin']);
-        $userRole = Role::firstOrCreate(['name' => 'user']);
+        $adminRole = Role::firstOrCreate(['name' => 'admin']);
+        $veterinarianRole = Role::firstOrCreate(['name' => 'veterinarian']);
+        $ownerRole = Role::firstOrCreate(['name' => 'owner']);
 
         // Asignar permisos al rol admin (todos)
-        $admin->syncPermissions($permissions);
+        $adminRole->syncPermissions($permissions);
+
+        // Permisos limitados para veterinarios
+        $veterinarianRole->syncPermissions(['view_tasks', 'create_tasks']);
 
         // Permisos limitados para usuarios normales
-        $userRole->syncPermissions(['view_tasks', 'create_tasks']);
+        $ownerRole->syncPermissions(['view_tasks', 'create_tasks']);
     }
 }

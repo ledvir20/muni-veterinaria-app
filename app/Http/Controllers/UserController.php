@@ -7,7 +7,6 @@ use App\Http\Requests\UserUpdateRequest;
 use App\Http\Resources\RoleResource;
 use App\Http\Resources\UserResource;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class UserController extends Controller
@@ -42,7 +41,7 @@ class UserController extends Controller
         if ($request->filled('roles')) {
             $newUser->assignRole($request->roles);
         } else {
-            $newUser->assignRole('user');
+            $newUser->assignRole('owner');
         }
 
         return redirect()->route('users.index');
@@ -89,6 +88,7 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         $user->delete();
+
         return to_route('users.index');
     }
 }
